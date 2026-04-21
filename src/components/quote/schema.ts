@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 export const quoteSchema = z.object({
-  service: z.enum(["new-install", "replacement", "disposal", "commercial"], {
-    errorMap: () => ({ message: "Please choose a service" }),
-  }),
+  service: z.enum(["new-install", "replacement", "disposal", "commercial"]),
   tankType: z.enum(["bunded", "single-skin", "unsure"]),
   capacity: z.enum(["<1500", "1500-2500", "2500-5000", ">5000", "unsure"]),
   propertyType: z.enum(["domestic", "commercial"]),
