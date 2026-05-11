@@ -10,8 +10,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary-deep hover:-translate-y-0.5 shadow-card",
-        cta: "bg-accent text-accent-foreground hover:brightness-110 hover:-translate-y-0.5 shadow-cta",
-        hero: "bg-gradient-accent text-accent-foreground hover:-translate-y-0.5 shadow-cta",
+        cta: "shimmer-on-hover bg-accent text-accent-foreground hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 active:brightness-95 shadow-cta",
+        hero: "shimmer-on-hover bg-gradient-accent text-accent-foreground hover:-translate-y-0.5 active:translate-y-0 shadow-cta",
         outline: "border-2 border-primary/20 bg-transparent text-primary hover:bg-primary hover:text-primary-foreground",
         ghostLight: "border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",

@@ -35,21 +35,29 @@ export const Hero = ({
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(184_55%_38%/.18),transparent_60%)]" aria-hidden />
 
       <div className="relative container-prose pt-32 pb-20 lg:pb-28 w-full">
-        <div className="max-w-3xl text-white animate-fade-in">
-          <p className="eyebrow text-accent">
+        <div className="max-w-3xl text-white">
+          <p className="eyebrow text-accent animate-fade-in" style={{ animationDelay: "60ms" }}>
             <span className="inline-block size-1.5 rounded-full bg-accent" />
             {eyebrow}
           </p>
-          <h1 className="mt-5 text-white font-display font-semibold text-[2.6rem] leading-[1.05] sm:text-6xl lg:text-7xl tracking-[-0.02em]">
+          <h1
+            className="mt-5 text-white font-display font-semibold text-[2.6rem] leading-[1.05] sm:text-6xl lg:text-7xl tracking-[-0.02em] animate-fade-in"
+            style={{ animationDelay: "180ms" }}
+          >
             {title}
           </h1>
           {subtitle && (
-            <p className="mt-6 max-w-xl text-base sm:text-lg text-white/85 leading-relaxed">{subtitle}</p>
+            <p
+              className="mt-6 max-w-xl text-base sm:text-lg text-white/85 leading-relaxed animate-fade-in"
+              style={{ animationDelay: "320ms" }}
+            >
+              {subtitle}
+            </p>
           )}
-          <div className="mt-10 flex flex-wrap items-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center gap-3 animate-fade-in" style={{ animationDelay: "460ms" }}>
             <Button asChild variant="hero" size="xl">
               <Link to={primaryCta.to}>
-                {primaryCta.label} <ArrowRight className="size-4" />
+                {primaryCta.label} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
             </Button>
             {secondaryCta ? (
@@ -65,7 +73,7 @@ export const Hero = ({
             )}
           </div>
           {!compact && (
-            <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 max-w-2xl">
+            <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 max-w-2xl animate-fade-in" style={{ animationDelay: "600ms" }}>
               {[
                 { icon: ShieldCheck, label: "OFTEC Registered" },
                 { icon: Award, label: "Made in Britain" },

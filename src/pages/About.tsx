@@ -3,6 +3,7 @@ import { Seo } from "@/components/Seo";
 import { Hero } from "@/components/sections/Hero";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { StatsBand } from "@/components/sections/StatsBand";
+import { BrandVideo } from "@/components/sections/BrandVideo";
 import { CTASection } from "@/components/sections/CTASection";
 import engineerImg from "@/assets/engineer-at-work.jpg";
 
@@ -36,6 +37,7 @@ const AboutPage = () => (
       </div>
     </section>
 
+    <BrandVideo />
     <StatsBand />
 
     <section className="section-pad">
