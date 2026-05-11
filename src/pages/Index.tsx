@@ -7,6 +7,8 @@ import { BenefitsGrid } from "@/components/sections/BenefitsGrid";
 import { StatsBand } from "@/components/sections/StatsBand";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { CTASection } from "@/components/sections/CTASection";
+import { BrandVideo } from "@/components/sections/BrandVideo";
+import { HomeFAQ, homeFaqJsonLd } from "@/components/sections/HomeFAQ";
 import { SITE } from "@/config/site";
 
 const Index = () => (
@@ -33,6 +35,7 @@ const Index = () => (
           name: SITE.name,
           url: SITE.url,
         },
+        homeFaqJsonLd,
       ]}
     />
     <Hero
@@ -47,8 +50,10 @@ const Index = () => (
     <TrustStrip />
     <ServicePillars />
     <BenefitsGrid />
+    <BrandVideo />
     <StatsBand />
     <Testimonials />
+    <HomeFAQ />
     <CTASection />
   </Layout>
 );
