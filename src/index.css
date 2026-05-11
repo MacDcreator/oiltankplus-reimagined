@@ -134,11 +134,14 @@
     animation: reveal 0.8s var(--ease-out-soft) forwards;
   }
   .hover-lift {
-    @apply transition-all duration-300;
+    @apply transition-all duration-300 ease-out;
   }
   .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-elevated);
+    transform: translateY(-6px);
+    box-shadow:
+      0 4px 8px hsl(188 60% 10% / 0.06),
+      0 24px 48px -16px hsl(var(--accent) / 0.22),
+      0 0 0 1px hsl(var(--accent) / 0.35) inset;
   }
 }
 
