@@ -1,70 +1,109 @@
-## Polish Pass: Micro-animations, Home FAQ, and Brand Video
 
-Tighten the site's feel with subtle motion, add a homepage FAQ, and bring back the brand video embed from the original site — all within the existing Refined Teal + Orange system.
+# Plan — Premium "Framer-grade" redesign of Oil Tanks Plus
 
-### 1. Micro-animations (subtle, brand-appropriate)
+I crawled the live site (home, `/oil-tank-range`, `/commercial-oil-tanks`) and lined up everything missing in our build, then scoped a visual + motion upgrade to move us into Framer/Webflow territory without losing the calm, trustworthy tone.
 
-Use Tailwind keyframes already in `tailwind.config.ts` plus a few additions. No new libraries.
+## 1. Content gaps to close (from the real site)
 
-- **Scroll reveals**: lightweight `useInView` hook (IntersectionObserver) → adds `animate-fade-in` with small stagger to section headings, cards, timeline steps. Respects `prefers-reduced-motion`.
-- **Hero**: gentle gradient drift on the overlay, eyebrow fade-in, headline word-by-word fade (200ms stagger), CTA settle.
-- **Service pillar / benefit cards**: refined `hover-lift` — soft shadow bloom, icon tile tilts ~3°, arrow nudges right, border tints to `accent/40`.
-- **Buttons**: CTA gets a slow shimmer on hover (gradient sweep) and a press-down on `:active`.
-- **Stats band**: numbers count up when in view.
-- **Process timeline**: step number circles pulse-in; connecting line draws across on reveal.
-- **Header**: shadow + backdrop-blur fades in once scrolled past 16px (currently abrupt).
-- **Accordion chevron**: rotates with custom easing to match the design system's `--ease-out-soft`.
+**Tank Range page** — original has **4 distinct categories** (we currently only show a tank list grid):
+- Bunded Oil Tanks
+- Single Skinned Oil Tanks
+- Steel Oil Tanks
+- Fire Rated Oil Tanks
 
-### 2. Homepage FAQ Section
+→ Restructure `/oil-tank-range` into a **category landing page** (4 large category cards with imagery + short description), then keep our filterable tank list lower on the page as "Explore individual models". Add 4 new category pages (`/oil-tank-range/bunded`, `/single-skinned`, `/steel`, `/fire-rated`) — each with hero, benefits, use-cases, models in that category, FAQ.
 
-Reuse `FAQAccordion` so styling stays consistent. Place it between `Testimonials` and the final `CTASection`.
+**Commercial page** — original has **7 services**, we have 6. Missing:
+- Interceptor Maintenance & Cleaning (environmental services)
 
-Curated top-of-funnel questions covering all services so it earns FAQ rich snippets:
-- How quickly can you install a new oil tank?
-- Are your engineers OFTEC registered?
-- Do you cover my area?
-- Do you remove and recycle my old tank?
-- How much does a new oil tank cost?
-- Do you work on commercial sites and fuel farms?
-- What warranty comes with a new tank?
+→ Add it as a 7th service card; expand each card with a real photo (not just an icon) like the original does.
 
-Add `FAQPage` JSON-LD on the home page (extend the existing `jsonLd` array in `src/pages/Index.tsx`) for SEO.
+**Header navigation** — currently flat links. Add a real **mega-menu** with dropdowns for:
+- Oil Tank Range → 4 categories + "View all"
+- Commercial → 7 services grouped (Install / Maintain / Decommission)
+- About → About, Locations, News, Contact
 
-Service pages already have FAQs — leave those as-is.
+## 2. "Framer/Webflow" feel — motion & visual upgrades
 
-### 3. YouTube Video Embed
+Today we have hover-lift cards + a couple of reveal-ups. To get to premium-tier we add a coherent motion system:
 
-The original site embeds `https://www.youtube.com/embed/LNLEMh_asw8`. Bring it back as a new `BrandVideo` section.
+**Scroll-driven motion** (lightweight, CSS + IntersectionObserver, no heavy lib):
+- Section eyebrows + headlines stagger-fade with a 60ms cascade
+- Images scale from `1.05 → 1.0` and fade in as they enter viewport ("Ken Burns lite")
+- Parallax-y depth on hero background + commercial/aerial photos (translateY with `transform` only, GPU-safe)
+- Number counters in StatsBand already animate — add a subtle underline-grow on the section heading
+- A thin "scroll progress" bar at the very top of the page in accent orange
 
-- New component: `src/components/sections/BrandVideo.tsx`
-- Lightweight facade pattern: render the YouTube poster (`https://i.ytimg.com/vi/LNLEMh_asw8/maxresdefault.jpg`) with a branded play button. Click → swap in the iframe (`?autoplay=1`). Keeps Lighthouse score intact.
-- Layout: 16:9 framed card with teal gradient border, soft shadow, eyebrow "See us at work", headline "A day with the OilTanksPlus team.", short supporting line.
-- Placement: on home, between `BenefitsGrid` and `StatsBand`. Also surface on `/about`.
+**Micro-interactions**:
+- Buttons get a magnetic hover (cursor pull within ~8px), plus existing shimmer
+- Card hover: image inside zooms 1.04, arrow icon slides + rotates 8°, border lights up (we already have border + lift — extend with image zoom)
+- Nav links: animated underline that draws left→right
+- Mega-menu: fades + slides down 8px with backdrop blur
+- Accordion FAQ: caret rotates with spring easing, content fades + height-grows
+- Form inputs (quote stepper): floating labels, focus ring pulse
 
-### 4. Polish odds & ends
+**Page transitions**: cross-fade + slight upward translate when route changes (using `AnimatePresence` from framer-motion which is already common; otherwise CSS-only via `key` on Layout).
 
-- Add `scroll-mt-24` to anchor targets so deep links don't tuck under sticky header.
-- Tighten section spacing on mobile (`section-pad` → `py-16 md:py-24 lg:py-28`).
-- Footer: subtle hover underline grow on links (`story-link` utility).
-- Sticky mobile CTA: slide-up entrance, hide on scroll-down/show on scroll-up.
+**Reduced-motion**: all of the above respect `prefers-reduced-motion` (already wired in `index.css`).
 
-### Files
+## 3. Strategic imagery (the biggest visible upgrade)
 
-**New**
-- `src/hooks/useInView.ts`
-- `src/components/sections/BrandVideo.tsx`
-- `src/components/sections/HomeFAQ.tsx` (thin wrapper around `FAQAccordion` with the curated list + JSON-LD data)
+Right now images are concentrated in the hero. Premium sites place a strong image every 1–2 sections. Plan:
 
-**Edited**
-- `src/index.css` — add shimmer, count-up, line-draw keyframes; reduced-motion guard
-- `tailwind.config.ts` — register new animations
-- `src/pages/Index.tsx` — insert `BrandVideo`, `HomeFAQ`; extend JSON-LD with `FAQPage`
-- `src/pages/About.tsx` — insert `BrandVideo`
-- `src/components/sections/Hero.tsx` — staggered reveal
-- `src/components/sections/ServicePillars.tsx`, `BenefitsGrid.tsx`, `ProcessTimeline.tsx`, `StatsBand.tsx`, `Testimonials.tsx` — apply `useInView` reveals + card polish
-- `src/components/layout/Header.tsx` — scroll-aware shadow
-- `src/components/layout/StickyMobileCTA.tsx` — scroll direction behaviour
-- `src/components/ui/button.tsx` — shimmer on `cta`/`hero` variants
+| Section / page | New image | Source |
+|---|---|---|
+| Home — between ServicePillars and BenefitsGrid | Wide shot of installed bunded tank in garden | AI generate |
+| Home — BenefitsGrid background | Soft blurred UK countryside | AI generate |
+| Home — Process timeline | Inline photos per step (survey → install → recycle) | AI generate, 3 small |
+| Home — before CTA | Engineer portrait, friendly | AI generate |
+| Range page categories | 4 product-style photos per category | Reuse scraped + AI |
+| Commercial — each of 7 service cards | Real photo per service (matching original) | Scrape originals where licensable + AI fill |
+| About | Team-at-work photo, warehouse / made-in-britain shot | AI generate |
+| Locations | UK map illustration (custom SVG) | Built in-code |
+| News | Larger featured-article hero card | Layout-only |
 
-### Out of scope
-No content rewrites, no new pages, no backend, no library additions.
+Add a reusable `<MediaFrame>` component: rounded-2xl, soft inner shadow, optional caption overlay, lazy-loaded, with the Ken-Burns-on-enter behavior baked in. Used everywhere going forward.
+
+## 4. Structural changes
+
+**New / restructured pages**
+- `/oil-tank-range` — rebuilt as category hub (4 category cards + filter grid below)
+- `/oil-tank-range/bunded` (+ single-skinned, steel, fire-rated) — 4 new category pages, same template
+- `/commercial-oil-tanks` — add Interceptor service, switch icon-cards to image-cards
+- Optional per-service commercial pages can stub-link to anchors for v1
+
+**New components**
+- `components/layout/MegaMenu.tsx` (desktop) + updated mobile sheet
+- `components/ui/MediaFrame.tsx` (image wrapper with motion)
+- `components/sections/CategoryGrid.tsx` (range hub)
+- `components/sections/ScrollProgress.tsx`
+- `hooks/useMagnetic.ts`, `hooks/useParallax.ts`
+
+**Touched files**
+- `Header.tsx`, `Footer.tsx`, `Hero.tsx`, `ServicePillars.tsx`, `BenefitsGrid.tsx`, `ProcessTimeline.tsx`, `CTASection.tsx`, `Index.tsx`
+- `Range.tsx` (restructure), `Commercial.tsx` (add 7th + image cards), `About.tsx`
+- `data/tanks.ts` — add `category: "bunded"|"single-skinned"|"steel"|"fire-rated"` to each model; add fire-rated models
+- `App.tsx` — 4 new routes; `sitemap.xml` updated
+- `index.css` / `tailwind.config.ts` — new keyframes (parallax-safe), scroll-progress, magnetic transition tokens
+
+## 5. SEO
+
+- Each new category page gets its own `<Seo>` title/desc + `Product`/`ItemList` JSON-LD
+- Commercial services get `Service` JSON-LD
+- Sitemap updated with all new routes
+- Breadcrumbs component on inner pages with `BreadcrumbList` schema
+
+## 6. Out of scope for this pass
+
+- Real CMS / news backend
+- Per-commercial-service standalone pages (we'll anchor-link for v1; can split out later)
+- Custom cursor (often feels gimmicky on a trust-led business site — happy to add if you want it)
+
+---
+
+### Technical notes (skip if not interested)
+
+- Motion lib: add `framer-motion` for `AnimatePresence` + variants; CSS keyframes still handle scroll reveals via existing `useInView` to keep bundle lean
+- All animations transform/opacity only (no layout thrash)
+- Mega-menu built on shadcn `NavigationMenu` (already installed) so a11y/keyboard nav is free
+- Images: AI-generated at 1600w max, served as `.jpg` (photos) with `loading="lazy"` + `decoding="async"`; the existing hero stays eager
