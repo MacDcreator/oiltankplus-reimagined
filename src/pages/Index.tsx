@@ -4,12 +4,23 @@ import { Hero } from "@/components/sections/Hero";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { ServicePillars } from "@/components/sections/ServicePillars";
 import { BenefitsGrid } from "@/components/sections/BenefitsGrid";
+import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
 import { StatsBand } from "@/components/sections/StatsBand";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { CTASection } from "@/components/sections/CTASection";
 import { BrandVideo } from "@/components/sections/BrandVideo";
 import { HomeFAQ, homeFaqJsonLd } from "@/components/sections/HomeFAQ";
+import { EngineerSpotlight } from "@/components/sections/EngineerSpotlight";
 import { SITE } from "@/config/site";
+import surveyImg from "@/assets/process-survey.jpg";
+import installImg from "@/assets/process-install.jpg";
+import recycleImg from "@/assets/process-recycle.jpg";
+
+const homeProcess = [
+  { n: "01", title: "Free site survey", body: "We visit, measure and recommend — no obligation, no pressure.", image: surveyImg },
+  { n: "02", title: "Fit & install", body: "OFTEC engineers install your new tank to spec — usually in a day.", image: installImg },
+  { n: "03", title: "Recycle & certify", body: "We remove and recycle your old tank, then hand over full paperwork.", image: recycleImg },
+];
 
 const Index = () => (
   <Layout>
@@ -49,10 +60,17 @@ const Index = () => (
     />
     <TrustStrip />
     <ServicePillars />
+    <ProcessTimeline
+      eyebrow="How it works"
+      title="From first call to fresh tank — in three steps."
+      steps={homeProcess}
+      withImages
+    />
     <BenefitsGrid />
     <BrandVideo />
     <StatsBand />
     <Testimonials />
+    <EngineerSpotlight />
     <HomeFAQ />
     <CTASection />
   </Layout>

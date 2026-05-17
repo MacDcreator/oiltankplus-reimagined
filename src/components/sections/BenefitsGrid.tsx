@@ -1,5 +1,6 @@
 import { CheckCircle2, Clock, MapPin, ShieldCheck, Truck, Sparkles } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import countryside from "@/assets/countryside-soft.jpg";
 
 const benefits = [
   { icon: ShieldCheck, title: "OFTEC accredited engineers", body: "Every installation is carried out by certified, experienced engineers — fully insured, fully compliant." },
@@ -13,7 +14,18 @@ const benefits = [
 export const BenefitsGrid = () => {
   const { ref, inView } = useInView<HTMLDivElement>();
   return (
-    <section className="section-pad bg-secondary/30">
+    <section className="relative section-pad isolate overflow-hidden">
+      {/* Soft countryside backdrop */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src={countryside}
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-cover opacity-[0.18]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/85 to-background" />
+      </div>
+
       <div className="container-prose">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           <div className="lg:col-span-4 lg:sticky lg:top-28">
@@ -29,7 +41,7 @@ export const BenefitsGrid = () => {
             {benefits.map((b, i) => (
               <div
                 key={b.title}
-                className={`group rounded-2xl bg-card border border-border/60 p-7 shadow-card hover-lift hover:border-accent/40 reveal-up ${inView ? "is-visible" : ""}`}
+                className={`group rounded-2xl bg-card/95 backdrop-blur-sm border border-border/60 p-7 shadow-card hover-lift hover:border-accent/40 reveal-up ${inView ? "is-visible" : ""}`}
                 style={{ transitionDelay: inView ? `${i * 70}ms` : "0ms" }}
               >
                 <div className="inline-flex size-11 items-center justify-center rounded-xl bg-accent-soft text-accent transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105">
