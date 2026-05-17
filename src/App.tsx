@@ -8,6 +8,7 @@ import Index from "./pages/Index.tsx";
 import Installation from "./pages/Installation.tsx";
 import Disposal from "./pages/Disposal.tsx";
 import Range from "./pages/Range.tsx";
+import TankCategory from "./pages/TankCategory.tsx";
 import Commercial from "./pages/Commercial.tsx";
 import About from "./pages/About.tsx";
 import Locations from "./pages/Locations.tsx";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/oil-tank-installation" element={<Installation />} />
             <Route path="/oil-tank-disposal" element={<Disposal />} />
             <Route path="/oil-tank-range" element={<Range />} />
+            <Route path="/oil-tank-range/:slug" element={<TankCategory />} />
             <Route path="/commercial-oil-tanks" element={<Commercial />} />
             <Route path="/about" element={<About />} />
             <Route path="/locations" element={<Locations />} />
