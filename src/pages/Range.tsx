@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/Seo";
 import { Hero } from "@/components/sections/Hero";
+import { CategoryGrid } from "@/components/sections/CategoryGrid";
 import { CTASection } from "@/components/sections/CTASection";
+import { useState, useMemo } from "react";
 import { TANKS } from "@/data/tanks";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
@@ -28,20 +29,28 @@ const RangePage = () => {
   return (
     <Layout>
       <Seo
-        title="Oil Tank Range"
-        description="Browse our full range of bunded, single skin, plastic and steel oil tanks — domestic and commercial, from 1,000 to 100,000 litres."
+        title="Oil Tank Range — Bunded, Single Skin, Steel & Fire Rated"
+        description="Browse our full range of bunded, single skinned, steel and fire rated oil tanks — domestic and commercial, from 1,200 to 15,000 litres. All UK manufactured."
         path="/oil-tank-range"
       />
       <Hero
         eyebrow="Oil tank range"
         title={<>The right tank for <span className="text-accent">every property.</span></>}
-        subtitle="All UK manufactured. All compliant. Filter by type, material and use to find the right fit."
+        subtitle="All UK manufactured. All compliant. Start by choosing a category, or dive into the full list below."
         image={rangeImg}
         compact
       />
 
-      <section className="section-pad">
+      <CategoryGrid />
+
+      {/* Explore all models */}
+      <section id="all-models" className="section-pad bg-secondary/30">
         <div className="container-prose">
+          <div className="max-w-2xl mb-12">
+            <span className="eyebrow">Every individual model</span>
+            <h2 className="mt-3 text-4xl sm:text-5xl font-display font-semibold leading-tight">Filter the full range.</h2>
+            <p className="mt-4 text-muted-foreground">Not sure which to pick? Filter by type, material and use — and we'll always help you choose on your free survey.</p>
+          </div>
           <div className="rounded-2xl bg-card border border-border p-5 sm:p-6 shadow-card grid gap-5 sm:grid-cols-3">
             {([
               { label: "Type", value: type, setValue: setType, options: filters.type },
@@ -56,8 +65,8 @@ const RangePage = () => {
                       key={o}
                       onClick={() => (f.setValue as (v: string) => void)(o)}
                       className={cn(
-                        "px-3 py-1.5 rounded-full text-xs font-semibold transition-colors",
-                        f.value === o ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground/70 hover:bg-secondary/70",
+                        "px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200",
+                        f.value === o ? "bg-primary text-primary-foreground shadow-sm" : "bg-secondary text-foreground/70 hover:bg-secondary/70",
                       )}
                     >
                       {o}

@@ -1,14 +1,16 @@
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SITE, NAV } from "@/config/site";
+import { SITE, RANGE_LINKS, COMMERCIAL_SERVICES } from "@/config/site";
+import { MegaMenu } from "./MegaMenu";
 import logo from "@/assets/logo.png";
 import { cn } from "@/lib/utils";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -21,6 +23,8 @@ export const Header = () => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
+
+  const closeMobile = () => { setOpen(false); setExpanded(null); };
 
   return (
     <>
@@ -48,25 +52,7 @@ export const Header = () => {
             <img src={logo} alt={SITE.name} className="h-8 lg:h-10 w-auto" />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
-            {NAV.map((item) => (
-              <NavLink
-                key={item.href}
-                to={item.href}
-                end
-                className={({ isActive }) =>
-                  cn(
-                    "px-3 py-2 text-sm font-medium rounded-full transition-colors",
-                    isActive
-                      ? "text-accent"
-                      : "text-foreground/80 hover:text-primary",
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+          <MegaMenu />
 
           <div className="flex items-center gap-2">
             <a
@@ -98,30 +84,48 @@ export const Header = () => {
         )}
       >
         <div className="pt-24 pb-10 px-6 h-full overflow-y-auto flex flex-col">
-          <nav className="flex flex-col gap-1" aria-label="Mobile">
-            {NAV.map((item) => (
-              <NavLink
-                key={item.href}
-                to={item.href}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  cn(
-                    "block py-4 text-2xl font-display font-semibold border-b border-white/10 transition-colors",
-                    isActive ? "text-accent" : "text-white/95 hover:text-accent",
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
+          <nav className="flex flex-col" aria-label="Mobile">
+            <NavLink to="/oil-tank-installation" onClick={closeMobile} className="block py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95 hover:text-accent">Installation</NavLink>
+            <NavLink to="/oil-tank-disposal" onClick={closeMobile} className="block py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95 hover:text-accent">Disposal</NavLink>
+
+            {/* Tank Range expander */}
+            <button onClick={() => setExpanded((e) => e === "range" ? null : "range")} className="flex items-center justify-between py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95">
+              Tank Range <ChevronDown className={cn("size-5 transition-transform", expanded === "range" && "rotate-180")} />
+            </button>
+            {expanded === "range" && (
+              <div className="pl-4 py-2 grid gap-2 border-b border-white/10">
+                <Link to="/oil-tank-range" onClick={closeMobile} className="text-base text-accent">All tanks →</Link>
+                {RANGE_LINKS.map((r) => (
+                  <Link key={r.slug} to={`/oil-tank-range/${r.slug}`} onClick={closeMobile} className="text-base text-white/80 hover:text-accent">{r.label}</Link>
+                ))}
+              </div>
+            )}
+
+            {/* Commercial expander */}
+            <button onClick={() => setExpanded((e) => e === "commercial" ? null : "commercial")} className="flex items-center justify-between py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95">
+              Commercial <ChevronDown className={cn("size-5 transition-transform", expanded === "commercial" && "rotate-180")} />
+            </button>
+            {expanded === "commercial" && (
+              <div className="pl-4 py-2 grid gap-2 border-b border-white/10">
+                <Link to="/commercial-oil-tanks" onClick={closeMobile} className="text-base text-accent">Overview →</Link>
+                {COMMERCIAL_SERVICES.map((s) => (
+                  <Link key={s.id} to={`/commercial-oil-tanks#${s.id}`} onClick={closeMobile} className="text-base text-white/80 hover:text-accent">{s.label}</Link>
+                ))}
+              </div>
+            )}
+
+            <NavLink to="/locations" onClick={closeMobile} className="block py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95 hover:text-accent">Locations</NavLink>
+            <NavLink to="/about" onClick={closeMobile} className="block py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95 hover:text-accent">About</NavLink>
+            <NavLink to="/news" onClick={closeMobile} className="block py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95 hover:text-accent">News</NavLink>
+            <NavLink to="/contact" onClick={closeMobile} className="block py-4 text-2xl font-display font-semibold border-b border-white/10 text-white/95 hover:text-accent">Contact</NavLink>
           </nav>
           <div className="mt-auto pt-8 grid grid-cols-2 gap-3">
-            <Button asChild variant="ghostLight" size="lg" onClick={() => setOpen(false)}>
+            <Button asChild variant="ghostLight" size="lg" onClick={closeMobile}>
               <a href={SITE.phoneHref}>
                 <Phone className="size-4" /> Call us
               </a>
             </Button>
-            <Button asChild variant="cta" size="lg" onClick={() => setOpen(false)}>
+            <Button asChild variant="cta" size="lg" onClick={closeMobile}>
               <Link to="/quote">Get a Quote</Link>
             </Button>
           </div>
